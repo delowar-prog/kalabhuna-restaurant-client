@@ -10,9 +10,12 @@ import OrderTab from '../OrderTab/OrderTab';
 
 
 const Order = () => {
-    const [tabIndex, setTabIndex] = useState(0)
+    const categories=['salad','pizza','soup','dessert','drinks']
+    const { category } = useParams()
+    const initialIndex=categories.indexOf(category)
+    const [tabIndex, setTabIndex] = useState(initialIndex)
     const [menu] = useMenu()
-    const {category}=useParams()
+    
     console.log(category)
     const dessert = menu.filter(item => item.category === 'dessert')
     const pizza = menu.filter(item => item.category === 'pizza')
@@ -31,19 +34,19 @@ const Order = () => {
                     <Tab>Drinks</Tab>
                 </TabList>
                 <TabPanel>
-                <OrderTab items={salad}></OrderTab>
+                    <OrderTab items={salad}></OrderTab>
                 </TabPanel>
                 <TabPanel>
-                <OrderTab items={pizza}></OrderTab>
+                    <OrderTab items={pizza}></OrderTab>
                 </TabPanel>
                 <TabPanel>
-                <OrderTab items={soup}></OrderTab>
+                    <OrderTab items={soup}></OrderTab>
                 </TabPanel>
                 <TabPanel>
-                <OrderTab items={dessert}></OrderTab>
+                    <OrderTab items={dessert}></OrderTab>
                 </TabPanel>
                 <TabPanel>
-                <OrderTab items={drinks}></OrderTab>
+                    <OrderTab items={drinks}></OrderTab>
                 </TabPanel>
             </Tabs>
         </div>

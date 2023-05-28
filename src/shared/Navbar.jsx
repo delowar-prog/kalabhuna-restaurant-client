@@ -1,11 +1,26 @@
-import { Fragment } from "react"
+import { Fragment, useContext } from "react"
 import { Link } from "react-router-dom"
-
+import { AuthContext } from "../Provider/AuthProvider"
+import { FaShoppingCart } from 'react-icons/fa';
 const Navbar = () => {
+    const { user, logoutUser } = useContext(AuthContext)
+    const handleLogout = () => {
+        logoutUser()
+            .then()
+    }
     const navOptions = <Fragment>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/menu">Menu</Link></li>
         <li><Link to="/order/salad">Order</Link></li>
+        <li><Link to="/">
+            
+                
+                <div className="badge"><FaShoppingCart></FaShoppingCart>+0</div>
+           
+        </Link></li>
+        {
+            user ? <li><button className="btn btn-primary" onClick={handleLogout}>Logout</button></li> : <li><Link to="/login">Login</Link></li>
+        }
     </Fragment>
     return (
         <div className="navbar fixed z-10 bg-opacity-25 text-white bg-base-100 max-w-screen-xl">
