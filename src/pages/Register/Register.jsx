@@ -1,11 +1,13 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import loginImg from '../../assets/others/authentication2.png'
 import { useForm } from "react-hook-form";
 import { useContext } from 'react';
 import { AuthContext } from '../../Provider/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Register = () => {
-    const {registerUser}=useContext(AuthContext)
+   const navigate=useNavigate()
+    const {registerUser, updateUserProfile, logoutUser}=useContext(AuthContext)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
         console.log(data)
@@ -13,6 +15,32 @@ const Register = () => {
         .then(result=>{
             const loggedUser=result.user 
             console.log(loggedUser)
+            updateUserProfile(data.name, data.photo)
+            .then(()=>{
+                const saveUser={name:data.name, email: data.email}
+                fetch(`http://localhost:5000/users`, {
+                    method:"POST",
+                    headers:{
+                        'content-type':'application/json'
+                    },
+                    body:JSON.stringify(saveUser)
+                })
+                .then(res=>res.json())
+                .then(data=>{
+                    if(data.insertedId){
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Registration Completed',
+                            showConfirmButton: false,
+                            timer: 1000
+                          })
+                          logoutUser().then(()=>{
+                            navigate('/login')
+                        })
+                    }
+                }) 
+            })
         })
         .catch(err=>console.log(err.message))
     };
@@ -34,6 +62,13 @@ const Register = () => {
                             {errors.name?.type === 'required' && <p role="alert" className='text-red-500'>Name is required</p>}
                             {errors.name?.type === 'minLength' && <p role="alert" className='text-red-500'>Name is at least 5 characters</p>}
                             {errors.name?.type === 'maxLength' && <p role="alert" className='text-red-500'>Name is at most 20 characters</p>}
+                        </div>
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Photo Url</span>
+                            </label>
+                            <input type="text" {...register("photo", { required: true })} placeholder="Photo" className="input input-bordered" />
+                            {errors.photo?.type === 'required' && <p role="alert" className='text-red-500'>Photo url filed is required</p>}
                         </div>
                         <div className="form-control">
                             <label className="label">
