@@ -1,9 +1,10 @@
 import { Fragment } from "react";
 import { FaBars, FaBook, FaCalendarAlt, FaEnvelope, FaHome, FaListUl, FaShoppingBasket, FaShoppingCart, FaUsers, FaUtensils, FaWallet } from "react-icons/fa"
 import { NavLink, Outlet } from "react-router-dom"
+import useAdmin from "../hooks/useAdmin";
 
 const Dashboard = () => {
-    const isAdmin = true;
+    const [isAdmin]=useAdmin();
     return (
         <div className="drawer drawer-mobile">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -17,7 +18,7 @@ const Dashboard = () => {
                     {
                         isAdmin ? <Fragment>
                             <li><NavLink to="/"> <FaHome></FaHome> Admin Home</NavLink></li>
-                            <li><NavLink to="/dashboard/additems"> <FaUtensils></FaUtensils>Add Items</NavLink></li>
+                            <li><NavLink to="/dashboard/additem"> <FaUtensils></FaUtensils>Add Items</NavLink></li>
                             <li><NavLink to="/dashboard/manageitems"> <FaListUl></FaListUl> Manage Items</NavLink></li>
                             <li><NavLink to="/dashboard/managebookings"> <FaBook></FaBook> Manage Bookings</NavLink></li>
                             <li><NavLink to="/dashboard/allusers"> <FaUsers></FaUsers> All Users</NavLink></li>
